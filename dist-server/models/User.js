@@ -10,10 +10,16 @@ var _mongoose = _interopRequireDefault(require("mongoose"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var UserSchema = new _mongoose.default.Schema({
-  firstName: String
+  firstName: String,
+  lastName: String,
+  age: Number,
+  favoriteFood: [String],
+  favoriteColor: [String]
+}, {
+  collection: 'users'
 });
 
-var Users = _mongoose.default.model('Users', UserSchema);
+var Users = _mongoose.default.model('User', UserSchema, 'users');
 
 var _default = Users;
 exports.default = _default;

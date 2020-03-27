@@ -10,7 +10,9 @@ var _mongoose = _interopRequireDefault(require("mongoose"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var PostSchema = new _mongoose.default.Schema({
-  text: String
+  title: String,
+  description: String,
+  authorId: String
 });
 
 var Posts = _mongoose.default.model('Posts', PostSchema);

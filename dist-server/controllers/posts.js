@@ -14,11 +14,40 @@ var _User = _interopRequireDefault(require("../models/User"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var fetchPosts = () => {
-  return _Post.default.find();
+  return _Post.default.findById('5e77d8b866b45f13a3fcdc65');
 };
 
+var createPost = data => {
+  return _Post.default.create(data);
+};
+
+var removePost = id => {
+  return _Post.default.findByIdAndRemove(id);
+};
+
+var updatePost = (_ref) => {
+  var {
+    title,
+    description,
+    authorId
+  } = _ref;
+  return _Post.default.findByIdAndUpdate(authorId, {
+    $set: {
+      title,
+      description
+    }
+  }, {
+    new: true
+  });
+}; // const updatePost = (title, description, id) => {
+// }
+
+
 var PostController = {
-  fetchPosts
+  fetchPosts,
+  createPost,
+  removePost,
+  updatePost
 };
 var _default = PostController;
 exports.default = _default;

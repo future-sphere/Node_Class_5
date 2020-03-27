@@ -11,7 +11,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 require('dotenv').config();
 
-var connectionString = process.env.DB_CONNECTION_STRING;
+var connectionString = 'mongodb+srv://admin:p@ssw0rd@cluster0-vge1l.mongodb.net/classData?authSource=admin&replicaSet=Cluster0-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true';
 var isConnected;
 
 var connectToDatabase = () => {

@@ -21,13 +21,55 @@ var router = _express.default.Router();
 
 router.get('/fetch', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, res, next) {
+    var data = yield _users.default.fetchUsers();
     res.json({
-      success: true
+      success: true,
+      data
     });
   });
 
   return function (_x, _x2, _x3) {
     return _ref.apply(this, arguments);
+  };
+}());
+router.put('/addColor', /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator(function* (req, res) {
+    var {
+      id,
+      color
+    } = req.body;
+    var data = yield _users.default.addColor({
+      id,
+      color
+    });
+    res.json({
+      success: true,
+      data
+    });
+  });
+
+  return function (_x4, _x5) {
+    return _ref2.apply(this, arguments);
+  };
+}());
+router.put('/removeColor', /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator(function* (req, res) {
+    var {
+      id,
+      color
+    } = req.body;
+    var data = yield _users.default.removeColor({
+      id,
+      color
+    });
+    res.json({
+      success: true,
+      data
+    });
+  });
+
+  return function (_x6, _x7) {
+    return _ref3.apply(this, arguments);
   };
 }());
 var _default = router;

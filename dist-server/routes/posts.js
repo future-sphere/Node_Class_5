@@ -21,13 +21,63 @@ var router = _express.default.Router();
 
 router.get('/fetch', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, res, next) {
+    var data = yield _posts.default.fetchPosts();
     res.json({
-      success: true
+      success: true,
+      data
     });
   });
 
   return function (_x, _x2, _x3) {
     return _ref.apply(this, arguments);
+  };
+}());
+router.post('/create', /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator(function* (req, res) {
+    var data = yield _posts.default.createPost(req.body);
+    res.json({
+      success: true,
+      data
+    });
+  });
+
+  return function (_x4, _x5) {
+    return _ref2.apply(this, arguments);
+  };
+}());
+router.delete('/remove', /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator(function* (req, res) {
+    var data = yield _posts.default.removePost(req.body.id);
+    res.json({
+      success: true,
+      data
+    });
+  });
+
+  return function (_x6, _x7) {
+    return _ref3.apply(this, arguments);
+  };
+}());
+router.put('/update', /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator(function* (req, res) {
+    var {
+      title,
+      description,
+      authorId
+    } = req.body;
+    var data = yield _posts.default.updatePost({
+      title,
+      authorId,
+      description
+    });
+    res.json({
+      success: true,
+      data
+    });
+  });
+
+  return function (_x8, _x9) {
+    return _ref4.apply(this, arguments);
   };
 }());
 var _default = router;

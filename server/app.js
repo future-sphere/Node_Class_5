@@ -9,7 +9,7 @@ import postsRouter from './routes/posts';
 import authRouter from './routes/auth';
 import connectToDatabase from './db';
 
-var app = express();
+const app = express();
 
 connectToDatabase();
 app.use(logger('dev'));
