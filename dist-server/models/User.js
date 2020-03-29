@@ -15,7 +15,9 @@ var UserSchema = new _mongoose.default.Schema({
   age: Number,
   favoriteFood: [String],
   favoriteColor: [String],
-  friends: [String]
+  friends: [String],
+  email: String,
+  password: String
 }, {
   collection: 'users'
 });

@@ -1,11 +1,41 @@
 import Users from '../models/User';
 import Friends from '../models/Friends';
 import paginate from '../helpers/paginate';
+import redis from 'redis';
+const redisClient = redis.createClient();
 
 const acceptableColors = ['Blue', 'Green', 'Black', 'Yellow'];
 
-const fetchUsers = () => {
-  return Users.find();
+const fetchUsers = async res => {
+  redisClient.get('allUsers', async (err, sessionData) => {
+    if (err) {
+      console.log(err);
+    }
+    if (sessionData) {
+      console.log('using session instead');
+      const json = JSON.parse(sessionData);
+      const { data } = json;
+      res.json({
+        success: true,
+        data: data,
+      });
+    } else {
+      const users = await Users.find();
+      const dataToSaveToSession = {
+        data: users,
+      };
+      const stringData = JSON.stringify(dataToSaveToSession);
+      redisClient.set('allUsers', stringData, 'EX', 60, (err, data) => {
+        if (err) {
+          console.log(err);
+        }
+        res.json({
+          success: true,
+          data: users,
+        });
+      });
+    }
+  });
 };
 
 // [Yellow, Green];

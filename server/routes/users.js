@@ -6,8 +6,7 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/fetch', async (req, res, next) => {
-  const data = await UserController.fetchUsers();
-  res.json({ success: true, data });
+  UserController.fetchUsers(res);
 });
 
 router.post('/', async (req, res) => {

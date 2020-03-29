@@ -23,11 +23,7 @@ var router = _express.default.Router();
 
 router.get('/fetch', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, res, next) {
-    var data = yield _users.default.fetchUsers();
-    res.json({
-      success: true,
-      data
-    });
+    _users.default.fetchUsers(res);
   });
 
   return function (_x, _x2, _x3) {

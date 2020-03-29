@@ -8,6 +8,8 @@ const UserSchema = new mongoose.Schema(
     favoriteFood: [String],
     favoriteColor: [String],
     friends: [String],
+    email: String,
+    password: String,
   },
   {
     collection: 'users',

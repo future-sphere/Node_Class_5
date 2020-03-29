@@ -24,7 +24,42 @@ var jwtSecret = process.env.JWT_SECRET;
 var verifyToken = token => _jsonwebtoken.default.verify(token, jwtSecret);
 
 var handleLogin = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator(function* (data) {});
+  var _ref = _asyncToGenerator(function* (data) {
+    var {
+      email,
+      password
+    } = data;
+
+    if (email && password) {
+      try {
+        var user = yield _User.default.findOne({
+          email
+        });
+
+        if (user) {
+          var passwordMatch = _bcryptjs.default.compareSync(password, user.password);
+
+          if (passwordMatch) {
+            var token = _jsonwebtoken.default.sign({
+              userId: user._id
+            }, jwtSecret);
+
+            return {
+              token
+            };
+          }
+
+          throw 'Password does not match';
+        }
+
+        throw 'User email is not found';
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      throw 'No email or password is provided';
+    }
+  });
 
   return function handleLogin(_x) {
     return _ref.apply(this, arguments);
@@ -32,7 +67,41 @@ var handleLogin = /*#__PURE__*/function () {
 }();
 
 var register = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator(function* (data) {});
+  var _ref2 = _asyncToGenerator(function* (data) {
+    var {
+      email,
+      password,
+      firstName,
+      lastName,
+      age,
+      favoriteColor
+    } = data;
+
+    try {
+      var existed = yield _User.default.findOne({
+        email
+      });
+
+      if (existed) {
+        throw 'This email has been taken';
+      }
+
+      var newUser = {
+        email,
+        firstName,
+        lastName,
+        age,
+        favoriteColor
+      };
+
+      var encryptedPassword = _bcryptjs.default.hashSync(password);
+
+      newUser.password = encryptedPassword;
+      return _User.default.create(newUser);
+    } catch (error) {
+      throw error;
+    }
+  });
 
   return function register(_x2) {
     return _ref2.apply(this, arguments);
