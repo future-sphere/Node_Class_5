@@ -1,8 +1,90 @@
 import Users from '../models/User';
+import Friends from '../models/Friends';
 import paginate from '../helpers/paginate';
+
+const acceptableColors = ['Blue', 'Green', 'Black', 'Yellow'];
 
 const fetchUsers = () => {
   return Users.find();
+};
+
+// [Yellow, Green];
+
+const createUser = data => {
+  for (let i = 0; i < data.favoriteColor.length; i++) {
+    if (!acceptableColors.includes(i)) {
+      throw 'Unacceptable Color found ' + data.favoriteColor[i];
+    }
+  }
+  return Users.create(data);
+};
+
+// const addFriend = async (user1, user2) => {
+//   if (user1 === user2) throw 'You cannot add yourself as a friend';
+//   if (user1 && user2) {
+//     const found1 = await Friends.findOne({ user1, user2 });
+//     const found2 = await Friends.findOne({ user1: user2, user2: user1 });
+//     if (found1 || found2) {
+//       throw 'These users are already friends';
+//     }
+//     return Friends.create({ user1, user2 });
+//   }
+
+//   throw 'Missing one or more user ID';
+// };
+
+const addFriend = async ({ userId, friendId }) => {
+  try {
+    if (userId === friendId) throw 'You cannot add yourself as friend';
+    if (userId && friendId) {
+      const user = await Users.findById(userId);
+      if (user.friends.includes(friendId)) {
+        throw 'You are already friends with this user';
+      }
+
+      await Users.findByIdAndUpdate(userId, {
+        $push: {
+          friends: friendId,
+        },
+      });
+
+      await Users.findByIdAndUpdate(friendId, {
+        $push: {
+          friends: userId,
+        },
+      });
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteFriends = async ({ friendId, userId }) => {
+  if (userId === friendId) throw 'You cannot delete yourself';
+  if (userId && friendId) {
+    try {
+      const user = await Users.findById(userId);
+      const friend = await Users.findById(friendId);
+      if (user.friends.includes(friendId)) {
+        await Users.findByIdAndUpdate(userId, {
+          $pull: {
+            friends: friendId,
+          },
+        });
+        await Users.findByIdAndUpdate(friendId, {
+          $pull: {
+            friends: userId,
+          },
+        });
+      } else {
+        throw 'You are not friends with this person to begin with';
+      }
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    throw 'You have to provide both ID';
+  }
 };
 
 const addColor = ({ id, color }) => {
@@ -39,6 +121,9 @@ const UserController = {
   fetchUsers,
   addColor,
   removeColor,
+  createUser,
+  addFriend,
+  deleteFriends,
 };
 
 export default UserController;

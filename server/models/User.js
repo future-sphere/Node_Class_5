@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema(
     age: Number,
     favoriteFood: [String],
     favoriteColor: [String],
+    friends: [String],
   },
   {
     collection: 'users',
